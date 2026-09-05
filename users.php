@@ -12,7 +12,7 @@ include_once('templates/header.php');
                     <?php 
                     // jika ada tombol simpan
                     if (isset($_POST['simpan'])) {
-                        if (tambah_tamu($_POST) > 0) {
+                        if (tambah_user($_POST) > 0) {
                     ?>      
                             <div class="alert alert-success" role="alert">
                                 Data berhasil disimpan!
@@ -45,7 +45,7 @@ include_once('templates/header.php');
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Usernam</th>
+                                            <th>Username</th>
                                             <th>User Role</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -53,8 +53,8 @@ include_once('templates/header.php');
                                     <tfoot>
                                         <tr>
                                             <th>No</th>
-                                            <th>Usernam</th>
-                                            <th>User ROle</th>
+                                            <th>Username</th>
+                                            <th>User Role</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </tfoot>
@@ -62,16 +62,18 @@ include_once('templates/header.php');
                                         <?php 
                                         // penomoran auto-increment
                                         $no = 1;
-                                        // query untuk memanggil semua data dari tabel buku_tamu
+                                        // query untuk memanggil semua data dari tabel users
                                         $users = query("SELECT * FROM users");
                                         foreach($users as $user) : ?>
                                         <tr>
                                             <td><?= $no++; ?></td>
-                                            <td><?= $user['usernam'] ?></td>
+                                            <td><?= $user['username'] ?></td>
                                             <td><?= $user['user_role'] ?></td>
-                                            <td><a class="btn btn-success" href="edit-user.php?id=<?= $user['id_user'] ?>">Ubah</a>
+                                            <td>
+                                                <a class="btn btn-success" href="edit-user.php?id=<?= $user['id_user'] ?>">Ubah</a>
                                                 <a onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')" class="btn btn-danger" 
-                                                href="hapus-user.php?id=<?= $user['id_user'] ?>">Hapus</a></td>
+                                                href="hapus-user.php?id=<?= $user['id_user'] ?>">Hapus</a>
+                                            </td>
                                         </tr>
                                         <?php endforeach; ?>
                                     </tbody>
@@ -83,23 +85,20 @@ include_once('templates/header.php');
                 </div>
 
 <?php 
-    // mengambil data barang dari tabel dengan kode terbesar
-    $query = mysqli_query($koneksi, "SELECT max(id_tamu) as kodeTerbesar FROM buku_tamu");
+    // mengambil data user dari tabel dengan kode terbesar
+    $query = mysqli_query($koneksi, "SELECT max(id_user) as kodeTerbesar FROM users");
     $data = mysqli_fetch_array($query);
-    $kodeTamu = $data['kodeTerbesar'];
+    $kodeuser = $data['kodeTerbesar'];
 
-    // mengambil angka dari kode barang terbesar, menggunakan fungsi substr dan diubah ke integer dengan (int)
-    $urutan = (int) substr($kodeTamu, 2, 3);
+    // mengambil angka dari kode terbesar, dimulakan dari indeks ke-3 (setelah 'usr')
+    $urutan = (int) substr($kodeuser, 3, 2);
 
-    // nomor yang diambil akan ditambah 1 untuk menentukan nomore urut berikutnya
+    // nomor yang diambil akan ditambah 1 untuk menentukan nomor urut berikutnya
     $urutan++;
 
-    // membuat kode barang baru
-    // string sprintf("%03s", $urutan); berfungsi untuk membuat string menjadi 3 karakter
-
-    // angka yang diambil tadi digabungkan dengan kode huruf yang kita inginkan, misalnya zt
-    $huruf = "zt";
-    $kodeTamu = $huruf . sprintf("%03s", $urutan);
+    // membuat kode user baru (usr01, usr02, dst.)
+    $huruf = "usr";
+    $kodeuser = $huruf . sprintf("%02s", $urutan);
 ?>
 
 <!-- Modal Tambah -->
@@ -107,42 +106,33 @@ include_once('templates/header.php');
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="tambahModalLabel">Tambah Data Tamu</h5>
+        <h5 class="modal-title" id="tambahModalLabel">Tambah Data User</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <form method="post" action="">
         <div class="modal-body">
-            <input type="hidden" name="id_tamu" id="id_tamu" value="<?= $kodeTamu ?>">
+            <input type="hidden" name="id_user" id="id_user" value="<?= $kodeuser ?>">
             <div class="form-group row">
-                <label for="nama_tamu" class="col-sm-3 col-form-label">Nama Tamu</label>
+                <label for="username" class="col-sm-3 col-form-label">Username</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" name="nama_tamu" id="nama_tamu">
+                    <input type="text" class="form-control" name="username" id="username">
                 </div>
-            </div>
+            </div>           
             <div class="form-group row">
-                <label for="alamat" class="col-sm-3 col-form-label">Alamat</label>
+                <label for="password" class="col-sm-3 col-form-label">Password</label>
                 <div class="col-sm-8">
-                    <textarea class="form-control" name="alamat" id="alamat"></textarea>
+                    <input type="password" class="form-control" name="password" id="password">
                 </div>
-            </div>
+            </div>           
             <div class="form-group row">
-                <label for="no_hp" class="col-sm-3 col-form-label">No. Telepon</label>
+                <label for="user_role" class="col-sm-3 col-form-label">User Role</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" id="no_hp" name="no_hp">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="bertemu" class="col-sm-3 col-form-label">Bertemu dg. </label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" id="bertemu" name="bertemu">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="kepentingan" class="col-sm-3 col-form-label">Kepentingan</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" name="kepentingan" id="kepentingan">
+                    <select class="form-control" name="user_role" id="user_role">
+                        <option value="admin">Administrator</option>
+                        <option value="operator">Operator</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -154,7 +144,6 @@ include_once('templates/header.php');
     </div>
   </div>
 </div>
-                 
 
 <?php 
 include_once('templates/footer.php');

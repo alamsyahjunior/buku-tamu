@@ -129,7 +129,7 @@ if (($_SESSION['role'])!=='operator'){
             <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form method="post" action="">
+      <form method="post" action="" enctype="multipart/form-data">
         <div class="modal-body">
             <input type="hidden" name="id_tamu" id="id_tamu" value="<?= $kodeTamu ?>">
             <div class="form-group row">
@@ -160,6 +160,13 @@ if (($_SESSION['role'])!=='operator'){
                 <label for="kepentingan" class="col-sm-3 col-form-label">Kepentingan</label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control" name="kepentingan" id="kepentingan">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="gambar" class="col-sm-3 col-form-label">Unggah Foto</label>
+                <div class="custom-file col-sm-8">
+                    <input type="file" class="custom-file-input" id="gambar" name="gambar">
+                    <label for="gambar" class="custom-file-label">Choose file</label>
                 </div>
             </div>
         </div>

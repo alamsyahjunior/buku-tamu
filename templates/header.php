@@ -70,11 +70,6 @@ if (!isset($_SESSION['login'])) {
                 </li>
                 <?php endif; ?>
                 
-                <li class="nav-item">
-                    <a class="nav-link" href="laporan.php">
-                        <i class="fas fa-fw fa-file-alt"></i>
-                        <span>Laporan</span></a>
-                </li>
                 <?php 
                 // cek apabila ada user login dan user role nya adalah admin maka tampilkan user
                 if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') :
@@ -83,6 +78,11 @@ if (!isset($_SESSION['login'])) {
                     <a class="nav-link" href="users.php">
                         <i class="fas fa-fw fa-users"></i>
                         <span>User</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="laporan.php">
+                        <i class="fas fa-fw fa-file-alt"></i>
+                        <span>Laporan</span></a>
                 </li>
                 <?php endif?>
                 <?php 

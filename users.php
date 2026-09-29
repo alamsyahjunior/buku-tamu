@@ -140,19 +140,19 @@ if (($_SESSION['role'])!=='admin'){
             <div class="form-group row">
                 <label for="username" class="col-sm-3 col-form-label">Username</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" name="username" id="username">
+                    <input type="text" class="form-control" name="username" id="username" required>
                 </div>
             </div>           
             <div class="form-group row">
                 <label for="password" class="col-sm-3 col-form-label">Password</label>
                 <div class="col-sm-8">
-                    <input type="password" class="form-control" name="password" id="password">
+                    <input type="password" class="form-control" name="password" id="password" required>
                 </div>
             </div>           
             <div class="form-group row">
                 <label for="user_role" class="col-sm-3 col-form-label">User Role</label>
                 <div class="col-sm-8">
-                    <select class="form-control" name="user_role" id="user_role">
+                    <select class="form-control" name="user_role" id="user_role" required>
                         <option value="admin">Administrator</option>
                         <option value="operator">Operator</option>
                     </select>
@@ -184,7 +184,7 @@ if (($_SESSION['role'])!=='admin'){
                     <div class="form-group row">
                         <label for="password" class="col-sm-4 col-form-label">Password Baru</label>
                         <div class="col-sm-7">
-                            <input type="password" class="form-control" name="password" id="password">
+                            <input type="password" class="form-control" name="password" id="password" required>
                         </div>
                     </div>
                 </div> 

@@ -92,6 +92,11 @@ function tambah_user($data){
     // enkripsi password dengan password_hash
     $password_hash = password_hash($password,PASSWORD_DEFAULT);
 
+    if (strlen($password) < 6) {
+        echo "password harus lebih dari 6 karakter";
+        return false;
+    }
+
     $query = "INSERT INTO users VALUES ('$kode','$username','$password_hash','$user_role')";
 
     mysqli_query($koneksi,$query);
@@ -136,6 +141,11 @@ function ganti_password($data) {
     $kode           = htmlspecialchars($data["id_user"]);
     $password       = htmlspecialchars($data["password"]);
     $password_hash  = password_hash($password,PASSWORD_DEFAULT);
+
+    if (strlen($password) < 6) {
+        echo "password harus lebih dari 6 karakter";
+        return false;
+    }
 
     $query = "UPDATE users SET
              password       ='$password_hash'
